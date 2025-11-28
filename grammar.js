@@ -107,6 +107,7 @@ module.exports = grammar({
     storage_modifier: ($) =>
       choice("static", "global", "tmp", "const", "final"),
 
+    // Base types
     type: ($) =>
       choice(
         "area",
