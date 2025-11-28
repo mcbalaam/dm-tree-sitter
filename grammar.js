@@ -209,7 +209,11 @@ module.exports = grammar({
     sleep_statement: ($) =>
       prec.right(seq("sleep", optional(seq($.expression, optional(";"))))),
     spawn_statement: ($) =>
-      prec.right(seq("spawn", optional($.expression), $._statement)),
+      prec.right(
+        1,
+        seq("spawn", optional($.parenthesized_expression), $._statement),
+      ),
+
     throw_statement: ($) => seq("throw", $.expression, optional(";")),
 
     // Expressions

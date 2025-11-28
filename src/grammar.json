@@ -1291,7 +1291,7 @@
     },
     "spawn_statement": {
       "type": "PREC_RIGHT",
-      "value": 0,
+      "value": 1,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1304,7 +1304,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "expression"
+                "name": "parenthesized_expression"
               },
               {
                 "type": "BLANK"
