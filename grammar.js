@@ -6,9 +6,6 @@ module.exports = grammar({
   word: ($) => $.identifier,
 
   conflicts: ($) => [
-    [$.call_expression, $.parenthesized_expression],
-    [$.member_expression],
-    [$.spawn_statement, $.expression_statement],
     [$.binary_expression, $.unary_expression, $.member_expression],
     [
       $.binary_expression,
@@ -435,10 +432,17 @@ module.exports = grammar({
         seq(
           "list",
           "(",
-          optional(seq($.expression, repeat(seq(",", $.expression)))),
+          optional(
+            choice(
+              seq($.key_value_pair, repeat(seq(",", $.key_value_pair))),
+              seq($.expression, repeat(seq(",", $.expression))),
+            ),
+          ),
           ")",
         ),
       ),
+
+    key_value_pair: ($) => prec.left(1, seq($.expression, "=", $.expression)),
 
     boolean: ($) => choice("TRUE", "FALSE"),
 

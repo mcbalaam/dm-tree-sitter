@@ -528,6 +528,21 @@
     }
   },
   {
+    "type": "key_value_pair",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "list_literal",
     "named": true,
     "fields": {},
@@ -537,6 +552,10 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "key_value_pair",
           "named": true
         }
       ]
