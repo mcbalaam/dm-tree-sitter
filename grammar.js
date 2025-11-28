@@ -8,6 +8,18 @@ module.exports = grammar({
   conflicts: ($) => [
     [$.call_expression, $.parenthesized_expression],
     [$.member_expression],
+    [$.spawn_statement, $.expression_statement],
+    [$.binary_expression, $.unary_expression, $.member_expression],
+    [
+      $.binary_expression,
+      $.unary_expression,
+      $.update_expression,
+      $.member_expression,
+    ],
+    [$.binary_expression, $.member_expression, $.del_expression],
+    [$.preprocessor_define],
+    [$.binary_expression, $.member_expression],
+    [$.if_statement],
   ],
 
   rules: {
@@ -200,7 +212,6 @@ module.exports = grammar({
         $.block,
       ),
 
-    // Fixed: Use prec.right to prefer consuming expression
     return_statement: ($) =>
       prec.right(seq("return", optional(seq($.expression, optional(";"))))),
     break_statement: ($) => prec.right(seq("break", optional(";"))),
@@ -213,7 +224,6 @@ module.exports = grammar({
         1,
         seq("spawn", optional($.parenthesized_expression), $._statement),
       ),
-
     throw_statement: ($) => seq("throw", $.expression, optional(";")),
 
     // Expressions
@@ -328,7 +338,7 @@ module.exports = grammar({
       ),
 
     member_expression: ($) =>
-      prec(15, seq($.expression, choice(".", ":", "/"), $.identifier)),
+      prec.left(15, seq($.expression, choice(".", ":", "/"), $.identifier)),
 
     new_expression: ($) =>
       prec.right(

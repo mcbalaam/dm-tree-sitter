@@ -2068,7 +2068,7 @@
       ]
     },
     "member_expression": {
-      "type": "PREC",
+      "type": "PREC_LEFT",
       "value": 15,
       "content": {
         "type": "SEQ",
@@ -2726,6 +2726,36 @@
     ],
     [
       "member_expression"
+    ],
+    [
+      "spawn_statement",
+      "expression_statement"
+    ],
+    [
+      "binary_expression",
+      "unary_expression",
+      "member_expression"
+    ],
+    [
+      "binary_expression",
+      "unary_expression",
+      "update_expression",
+      "member_expression"
+    ],
+    [
+      "binary_expression",
+      "member_expression",
+      "del_expression"
+    ],
+    [
+      "preprocessor_define"
+    ],
+    [
+      "binary_expression",
+      "member_expression"
+    ],
+    [
+      "if_statement"
     ]
   ],
   "precedences": [],
