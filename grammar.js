@@ -253,6 +253,7 @@ module.exports = grammar({
         $.builtin_constant,
         $.parenthesized_expression,
         $.list_literal,
+        $.associative_list_literal,
       ),
 
     parenthesized_expression: ($) => seq("(", $.expression, ")"),
@@ -432,6 +433,21 @@ module.exports = grammar({
         2,
         seq(
           "list",
+          "(",
+          optional(
+            choice(
+              seq($.key_value_pair, repeat(seq(",", $.key_value_pair))),
+              seq($.expression, repeat(seq(",", $.expression))),
+            ),
+          ),
+          ")",
+        ),
+      ),
+
+    associative_list_literal: ($) =>
+      prec(
+        2,
+        seq(
           "(",
           optional(
             choice(

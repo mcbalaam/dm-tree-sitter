@@ -30,6 +30,25 @@
     }
   },
   {
+    "type": "associative_list_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "key_value_pair",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "binary_expression",
     "named": true,
     "fields": {},
@@ -914,6 +933,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "associative_list_literal",
+          "named": true
+        },
         {
           "type": "boolean",
           "named": true
