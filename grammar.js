@@ -244,9 +244,9 @@ module.exports = grammar({
 
     primary_expression: ($) =>
       choice(
+        $.string,
         $.identifier,
         $.number,
-        $.string,
         $.boolean,
         $.null,
         $.builtin_variable,
@@ -359,34 +359,38 @@ module.exports = grammar({
       ),
 
     string: ($) =>
-      choice(
-        $.double_quoted_string,
-        $.single_quoted_string,
-        $.triple_quoted_string,
-        $.raw_string,
+      prec(
+        20,
+        choice(
+          $.double_quoted_string,
+          $.single_quoted_string,
+          $.triple_quoted_string,
+          $.raw_string,
+        ),
       ),
 
     double_quoted_string: ($) =>
       seq(
-        '"',
-        repeat(
-          choice($.escape_sequence, $.string_interpolation, /[^"\\\[\n]+/),
-        ),
-        '"',
+        token('"'),
+        repeat(choice($.escape_sequence, $.string_interpolation, /[^"\n]+/)),
+        token('"'),
       ),
 
     single_quoted_string: ($) =>
-      seq("'", repeat(choice($.escape_sequence, /[^'\\\n]+/)), "'"),
+      seq(token("'"), repeat(choice($.escape_sequence, /[^'\n]+/)), token("'")),
 
     triple_quoted_string: ($) =>
       seq(
-        '{"',
-        repeat(choice($.escape_sequence, $.string_interpolation, /[^"}\\\[]+/)),
-        '"}',
+        token('{"'),
+        repeat(choice($.escape_sequence, $.string_interpolation, /[^"}]+/)),
+        token('"}'),
       ),
 
     raw_string: ($) =>
-      choice(seq('@{"', /[^"]+/, '"}'), seq("@", /./, /[^\n]*/)),
+      choice(
+        seq(token('@{"'), /[^"]+/, token('"}')),
+        seq(token("@"), /./, /[^\n]*/),
+      ),
 
     escape_sequence: ($) =>
       token(
