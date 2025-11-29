@@ -17,7 +17,6 @@ module.exports = grammar({
     [$.preprocessor_define],
     [$.binary_expression, $.member_expression],
     [$.if_statement],
-    [$.assignment_expression, $.assoc_list_item],
   ],
 
   rules: {
@@ -254,7 +253,6 @@ module.exports = grammar({
         $.builtin_constant,
         $.parenthesized_expression,
         $.list_literal,
-        $.associative_list_literal,
       ),
 
     parenthesized_expression: ($) => seq("(", $.expression, ")"),
@@ -371,9 +369,7 @@ module.exports = grammar({
     double_quoted_string: ($) =>
       seq(
         '"',
-        repeat(
-          choice($.escape_sequence, $.string_interpolation, /[^"\\\[\n]+/),
-        ),
+        repeat(choice($.escape_sequence, $.string_interpolation, /[^"\\\n]+/)),
         '"',
       ),
 
@@ -383,12 +379,12 @@ module.exports = grammar({
     triple_quoted_string: ($) =>
       seq(
         '{"',
-        repeat(choice($.escape_sequence, $.string_interpolation, /[^"}\\\[]+/)),
+        repeat(choice($.escape_sequence, $.string_interpolation, /[^"}\\\n]+/)),
         '"}',
       ),
 
     raw_string: ($) =>
-      choice(seq('@{"', /[^"]+/, '"}'), seq("@", /./, /[^\n]*/)),
+      choice(seq('@{"', /[^"]*/, '"}'), seq("@", /./, /[^\n]*/)),
 
     escape_sequence: ($) =>
       token(
@@ -429,22 +425,16 @@ module.exports = grammar({
 
     string_interpolation: ($) => seq("[", $.expression, "]"),
 
-    list_literal: ($) => prec(2, seq("list", "(", optional($.list_items), ")")),
-
-    associative_list_literal: ($) =>
+    list_literal: ($) =>
       prec(
-        3,
+        2,
         seq(
           "list",
           "(",
-          optional(seq($.assoc_list_item, repeat(seq(",", $.assoc_list_item)))),
+          optional(seq($.expression, repeat(seq(",", $.expression)))),
           ")",
         ),
       ),
-
-    list_items: ($) => seq($.expression, repeat(seq(",", $.expression))),
-
-    assoc_list_item: ($) => prec.left(4, seq($.expression, "=", $.expression)),
 
     boolean: ($) => choice("TRUE", "FALSE"),
 
