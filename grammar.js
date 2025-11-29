@@ -99,7 +99,9 @@ module.exports = grammar({
         seq(
           "var",
           optional(
-            token(/\/[a-zA-Z_][a-zA-Z0-9_]*(\/[a-zA-Z_][a-zA-Z0-9_]*)*/),
+            token.immediate(
+              /\/[a-zA-Z_][a-zA-Z0-9_]*(\/[a-zA-Z_][a-zA-Z0-9_]*)*/,
+            ),
           ),
           field("name", $.identifier),
           optional(seq("=", $.expression)),
