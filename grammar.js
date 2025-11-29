@@ -98,7 +98,6 @@ module.exports = grammar({
         1,
         seq(
           "var",
-          optional(seq("/", $.identifier, repeat(seq("/", $.identifier)))),
           field("name", $.identifier),
           optional(seq("=", $.expression)),
           optional(";"),
@@ -359,7 +358,7 @@ module.exports = grammar({
 
     string: ($) =>
       prec(
-        25,
+        30,
         choice(
           $.double_quoted_string,
           $.single_quoted_string,
