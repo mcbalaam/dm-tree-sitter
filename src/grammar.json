@@ -450,7 +450,7 @@
     },
     "variable_declaration": {
       "type": "PREC",
-      "value": 20,
+      "value": 1,
       "content": {
         "type": "SEQ",
         "members": [
@@ -462,11 +462,33 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "\\/[a-zA-Z_][a-zA-Z0-9_]*(\\/[a-zA-Z_][a-zA-Z0-9_]*)*"
-                }
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "/"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "identifier"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "/"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "identifier"
+                        }
+                      ]
+                    }
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -2155,7 +2177,7 @@
     },
     "string": {
       "type": "PREC",
-      "value": 20,
+      "value": 25,
       "content": {
         "type": "CHOICE",
         "members": [

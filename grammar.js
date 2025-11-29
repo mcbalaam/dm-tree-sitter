@@ -95,14 +95,10 @@ module.exports = grammar({
     // Variable declarations
     variable_declaration: ($) =>
       prec(
-        20,
+        1,
         seq(
           "var",
-          optional(
-            token.immediate(
-              /\/[a-zA-Z_][a-zA-Z0-9_]*(\/[a-zA-Z_][a-zA-Z0-9_]*)*/,
-            ),
-          ),
+          optional(seq("/", $.identifier, repeat(seq("/", $.identifier)))),
           field("name", $.identifier),
           optional(seq("=", $.expression)),
           optional(";"),
@@ -363,7 +359,7 @@ module.exports = grammar({
 
     string: ($) =>
       prec(
-        20,
+        25,
         choice(
           $.double_quoted_string,
           $.single_quoted_string,
