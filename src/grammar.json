@@ -1451,6 +1451,10 @@
         {
           "type": "SYMBOL",
           "name": "list_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "associative_list_literal"
         }
       ]
     },
@@ -2520,57 +2524,60 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "CHOICE",
+                "type": "SYMBOL",
+                "name": "list_items"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "STRING",
+            "value": ")"
+          }
+        ]
+      }
+    },
+    "associative_list_literal": {
+      "type": "PREC",
+      "value": 3,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "list"
+          },
+          {
+            "type": "STRING",
+            "value": "("
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
                 "members": [
                   {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "assoc_list_item"
-                      },
-                      {
-                        "type": "REPEAT",
-                        "content": {
-                          "type": "SEQ",
-                          "members": [
-                            {
-                              "type": "STRING",
-                              "value": ","
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "assoc_list_item"
-                            }
-                          ]
-                        }
-                      }
-                    ]
+                    "type": "SYMBOL",
+                    "name": "assoc_list_item"
                   },
                   {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "expression"
-                      },
-                      {
-                        "type": "REPEAT",
-                        "content": {
-                          "type": "SEQ",
-                          "members": [
-                            {
-                              "type": "STRING",
-                              "value": ","
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "expression"
-                            }
-                          ]
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "assoc_list_item"
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 ]
               },
@@ -2586,9 +2593,34 @@
         ]
       }
     },
+    "list_items": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "expression"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "assoc_list_item": {
       "type": "PREC_LEFT",
-      "value": 3,
+      "value": 4,
       "content": {
         "type": "SEQ",
         "members": [
@@ -2796,6 +2828,10 @@
     ],
     [
       "if_statement"
+    ],
+    [
+      "assignment_expression",
+      "assoc_list_item"
     ]
   ],
   "precedences": [],

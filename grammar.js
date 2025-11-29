@@ -17,6 +17,7 @@ module.exports = grammar({
     [$.preprocessor_define],
     [$.binary_expression, $.member_expression],
     [$.if_statement],
+    [$.assignment_expression, $.assoc_list_item],
   ],
 
   rules: {
@@ -253,6 +254,7 @@ module.exports = grammar({
         $.builtin_constant,
         $.parenthesized_expression,
         $.list_literal,
+        $.associative_list_literal,
       ),
 
     parenthesized_expression: ($) => seq("(", $.expression, ")"),
@@ -427,23 +429,22 @@ module.exports = grammar({
 
     string_interpolation: ($) => seq("[", $.expression, "]"),
 
-    list_literal: ($) =>
+    list_literal: ($) => prec(2, seq("list", "(", optional($.list_items), ")")),
+
+    associative_list_literal: ($) =>
       prec(
-        2,
+        3,
         seq(
           "list",
           "(",
-          optional(
-            choice(
-              seq($.assoc_list_item, repeat(seq(",", $.assoc_list_item))),
-              seq($.expression, repeat(seq(",", $.expression))),
-            ),
-          ),
+          optional(seq($.assoc_list_item, repeat(seq(",", $.assoc_list_item)))),
           ")",
         ),
       ),
 
-    assoc_list_item: ($) => prec.left(3, seq($.expression, "=", $.expression)),
+    list_items: ($) => seq($.expression, repeat(seq(",", $.expression))),
+
+    assoc_list_item: ($) => prec.left(4, seq($.expression, "=", $.expression)),
 
     boolean: ($) => choice("TRUE", "FALSE"),
 
