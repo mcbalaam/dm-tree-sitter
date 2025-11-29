@@ -2202,25 +2202,29 @@
       }
     },
     "string": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "double_quoted_string"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "single_quoted_string"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "triple_quoted_string"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "raw_string"
-        }
-      ]
+      "type": "PREC",
+      "value": 20,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "double_quoted_string"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "single_quoted_string"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "triple_quoted_string"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "raw_string"
+          }
+        ]
+      }
     },
     "double_quoted_string": {
       "type": "SEQ",

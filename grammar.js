@@ -366,25 +366,14 @@ module.exports = grammar({
         $.raw_string,
       ),
 
-    double_quoted_string: ($) =>
-      seq(
-        '"',
-        repeat(choice($.escape_sequence, $.string_interpolation, /[^"\\\n]+/)),
-        '"',
-      ),
+    double_quoted_string: ($) => token(seq('"', /[^"\\\n]*/, '"')),
 
-    single_quoted_string: ($) =>
-      seq("'", repeat(choice($.escape_sequence, /[^'\\\n]+/)), "'"),
+    single_quoted_string: ($) => token(seq("'", /[^'\\\n]*/, "'")),
 
-    triple_quoted_string: ($) =>
-      seq(
-        '{"',
-        repeat(choice($.escape_sequence, $.string_interpolation, /[^"}\\\n]+/)),
-        '"}',
-      ),
+    triple_quoted_string: ($) => token(seq('{"', /[^"}]*/, '"}')),
 
     raw_string: ($) =>
-      choice(seq('@{"', /[^"]*/, '"}'), seq("@", /./, /[^\n]*/)),
+      choice(token(seq('@{"', /[^"]*/, '"}')), token(seq("@", /./, /[^\n]*/))),
 
     escape_sequence: ($) =>
       token(
