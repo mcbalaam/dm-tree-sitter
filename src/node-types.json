@@ -649,11 +649,6 @@
     }
   },
   {
-    "type": "preprocessor_condition",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "preprocessor_define",
     "named": true,
     "fields": {
@@ -663,6 +658,20 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "preprocessor_macro",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "preprocessor_parameters",
             "named": true
           }
         ]
@@ -677,16 +686,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "preprocessor_parameters",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -866,11 +865,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "preprocessor_value",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "primary_expression",
@@ -1734,6 +1728,10 @@
     "named": false
   },
   {
+    "type": "preprocessor_condition",
+    "named": true
+  },
+  {
     "type": "preprocessor_error",
     "named": true
   },
@@ -1743,6 +1741,10 @@
   },
   {
     "type": "preprocessor_pragma",
+    "named": true
+  },
+  {
+    "type": "preprocessor_value",
     "named": true
   },
   {

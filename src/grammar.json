@@ -146,49 +146,109 @@
       ]
     },
     "preprocessor_define": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "#"
-        },
-        {
-          "type": "STRING",
-          "value": "define"
-        },
-        {
-          "type": "FIELD",
-          "name": "name",
+          "type": "PREC",
+          "value": 1,
           "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "#"
+              },
+              {
+                "type": "STRING",
+                "value": "define"
+              },
+              {
+                "type": "FIELD",
+                "name": "name",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "identifier"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "preprocessor_macro"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "parameters",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "preprocessor_parameters"
+                }
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "FIELD",
+                    "name": "value",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "preprocessor_value"
+                    }
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
           }
         },
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "preprocessor_parameters"
+              "type": "STRING",
+              "value": "#"
             },
             {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
+              "type": "STRING",
+              "value": "define"
+            },
             {
               "type": "FIELD",
-              "name": "value",
+              "name": "name",
               "content": {
-                "type": "SYMBOL",
-                "name": "preprocessor_value"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "identifier"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "preprocessor_macro"
+                  }
+                ]
               }
             },
             {
-              "type": "BLANK"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "value",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "preprocessor_value"
+                  }
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         }
@@ -255,8 +315,12 @@
     "preprocessor_value": {
       "type": "TOKEN",
       "content": {
-        "type": "PATTERN",
-        "value": "[^\\n]+"
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^\\/\\n][^\\n]*"
+        }
       }
     },
     "preprocessor_if": {
@@ -459,13 +523,20 @@
     "preprocessor_condition": {
       "type": "TOKEN",
       "content": {
-        "type": "PATTERN",
-        "value": "[^\\n]+"
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^\\n]*"
+        }
       }
     },
     "preprocessor_macro": {
-      "type": "PATTERN",
-      "value": "[A-Z_][A-Z0-9_]*"
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[A-Z_][A-Z0-9_]*"
+      }
     },
     "variable_declaration": {
       "type": "PREC",
@@ -1381,8 +1452,12 @@
           "name": "identifier"
         },
         {
-          "type": "SYMBOL",
-          "name": "preprocessor_macro"
+          "type": "PREC",
+          "value": 20,
+          "content": {
+            "type": "SYMBOL",
+            "name": "preprocessor_macro"
+          }
         },
         {
           "type": "SYMBOL",
@@ -2779,7 +2854,9 @@
       "del_expression"
     ],
     [
-      "preprocessor_define"
+      "preprocessor_define",
+      "binary_expression",
+      "member_expression"
     ],
     [
       "binary_expression",

@@ -14,7 +14,8 @@ module.exports = grammar({
       $.member_expression,
     ],
     [$.binary_expression, $.member_expression, $.del_expression],
-    [$.preprocessor_define],
+    [$.preprocessor_define, $.binary_expression, $.member_expression],
+
     [$.binary_expression, $.member_expression],
     [$.if_statement],
   ],
@@ -58,12 +59,25 @@ module.exports = grammar({
       ),
 
     preprocessor_define: ($) =>
-      seq(
-        "#",
-        "define",
-        field("name", $.identifier),
-        optional($.preprocessor_parameters),
-        optional(field("value", $.preprocessor_value)),
+      choice(
+        // Macro with parameters (higher precedence)
+        prec(
+          1,
+          seq(
+            "#",
+            "define",
+            field("name", choice($.identifier, $.preprocessor_macro)),
+            field("parameters", $.preprocessor_parameters),
+            optional(field("value", $.preprocessor_value)),
+          ),
+        ),
+        // Macro without parameters
+        seq(
+          "#",
+          "define",
+          field("name", choice($.identifier, $.preprocessor_macro)),
+          optional(field("value", $.preprocessor_value)),
+        ),
       ),
 
     preprocessor_parameters: ($) =>
@@ -75,7 +89,7 @@ module.exports = grammar({
         ")",
       ),
 
-    preprocessor_value: ($) => token(/[^\n]+/),
+    preprocessor_value: ($) => token(prec(-1, /[^\/\n][^\n]*/)),
 
     preprocessor_if: ($) => seq("#", "if", $.preprocessor_condition),
     preprocessor_ifdef: ($) => seq("#", "ifdef", $.identifier),
@@ -90,10 +104,10 @@ module.exports = grammar({
     preprocessor_warn: ($) => token(seq("#", "warn", /[^\n]*/)),
     preprocessor_pragma: ($) => token(seq("#", "pragma", /[^\n]*/)),
 
-    preprocessor_condition: ($) => token(/[^\n]+/),
+    preprocessor_condition: ($) => token(prec(-1, /[^\n]*/)),
 
     // Preprocessor macro identifiers (typically uppercase)
-    preprocessor_macro: ($) => /[A-Z_][A-Z0-9_]*/,
+    preprocessor_macro: ($) => token(/[A-Z_][A-Z0-9_]*/),
 
     // Variable declarations
     variable_declaration: ($) =>
@@ -247,7 +261,7 @@ module.exports = grammar({
       choice(
         $.string,
         $.identifier,
-        $.preprocessor_macro,
+        prec(20, $.preprocessor_macro),
         $.number,
         $.boolean,
         $.null,
