@@ -461,10 +461,6 @@
         {
           "type": "parameter_list",
           "named": true
-        },
-        {
-          "type": "path_components",
-          "named": true
         }
       ]
     }
@@ -647,21 +643,6 @@
       "types": [
         {
           "type": "expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "path_components",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
           "named": true
         }
       ]
@@ -1087,11 +1068,6 @@
     }
   },
   {
-    "type": "storage_modifier",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "string",
     "named": true,
     "fields": {},
@@ -1271,23 +1247,11 @@
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
           "type": "expression",
-          "named": true
-        },
-        {
-          "type": "path_components",
-          "named": true
-        },
-        {
-          "type": "storage_modifier",
-          "named": true
-        },
-        {
-          "type": "type",
           "named": true
         }
       ]
@@ -1633,10 +1597,6 @@
     "named": false
   },
   {
-    "type": "const",
-    "named": false
-  },
-  {
     "type": "continue",
     "named": false
   },
@@ -1689,19 +1649,11 @@
     "named": false
   },
   {
-    "type": "final",
-    "named": false
-  },
-  {
     "type": "for",
     "named": false
   },
   {
     "type": "generator",
-    "named": false
-  },
-  {
-    "type": "global",
     "named": false
   },
   {
@@ -1833,10 +1785,6 @@
     "named": false
   },
   {
-    "type": "static",
-    "named": false
-  },
-  {
     "type": "step",
     "named": false
   },
@@ -1846,10 +1794,6 @@
   },
   {
     "type": "throw",
-    "named": false
-  },
-  {
-    "type": "tmp",
     "named": false
   },
   {

@@ -94,14 +94,17 @@ module.exports = grammar({
 
     // Variable declarations
     variable_declaration: ($) =>
-      seq(
-        "var",
-        optional(seq("/", $.storage_modifier)),
-        optional(seq("/", $.type)),
-        optional($.path_components),
-        field("name", $.identifier),
-        optional(seq("=", $.expression)),
-        optional(";"),
+      prec(
+        20,
+        seq(
+          "var",
+          optional(
+            token(/\/[a-zA-Z_][a-zA-Z0-9_]*(\/[a-zA-Z_][a-zA-Z0-9_]*)*/),
+          ),
+          field("name", $.identifier),
+          optional(seq("=", $.expression)),
+          optional(";"),
+        ),
       ),
 
     storage_modifier: ($) =>
@@ -135,13 +138,11 @@ module.exports = grammar({
         "world",
       ),
 
-    path_components: ($) => repeat1(seq("/", $.identifier)),
-
     // Function definitions
     function_definition: ($) =>
       seq(
         choice("proc", "verb", "operator"),
-        optional($.path_components),
+        optional(token(/\/[a-zA-Z_][a-zA-Z0-9_]*(\/[a-zA-Z_][a-zA-Z0-9_]*)*/)),
         field("name", $.identifier),
         $.parameter_list,
         choice($.block, ";"),
