@@ -253,7 +253,6 @@ module.exports = grammar({
         $.builtin_constant,
         $.parenthesized_expression,
         $.list_literal,
-        $.associative_list_literal,
       ),
 
     parenthesized_expression: ($) => seq("(", $.expression, ")"),
@@ -436,7 +435,7 @@ module.exports = grammar({
           "(",
           optional(
             choice(
-              seq($.key_value_pair, repeat(seq(",", $.key_value_pair))),
+              seq($.assoc_list_item, repeat(seq(",", $.assoc_list_item))),
               seq($.expression, repeat(seq(",", $.expression))),
             ),
           ),
@@ -444,22 +443,7 @@ module.exports = grammar({
         ),
       ),
 
-    associative_list_literal: ($) =>
-      prec(
-        2,
-        seq(
-          "(",
-          optional(
-            choice(
-              seq($.key_value_pair, repeat(seq(",", $.key_value_pair))),
-              seq($.expression, repeat(seq(",", $.expression))),
-            ),
-          ),
-          ")",
-        ),
-      ),
-
-    key_value_pair: ($) => prec.left(1, seq($.expression, "=", $.expression)),
+    assoc_list_item: ($) => prec.left(3, seq($.expression, "=", $.expression)),
 
     boolean: ($) => choice("TRUE", "FALSE"),
 

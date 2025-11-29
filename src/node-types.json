@@ -30,19 +30,15 @@
     }
   },
   {
-    "type": "associative_list_literal",
+    "type": "assoc_list_item",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "expression",
-          "named": true
-        },
-        {
-          "type": "key_value_pair",
           "named": true
         }
       ]
@@ -547,21 +543,6 @@
     }
   },
   {
-    "type": "key_value_pair",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "list_literal",
     "named": true,
     "fields": {},
@@ -570,11 +551,11 @@
       "required": false,
       "types": [
         {
-          "type": "expression",
+          "type": "assoc_list_item",
           "named": true
         },
         {
-          "type": "key_value_pair",
+          "type": "expression",
           "named": true
         }
       ]
@@ -933,10 +914,6 @@
       "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "associative_list_literal",
-          "named": true
-        },
         {
           "type": "boolean",
           "named": true
