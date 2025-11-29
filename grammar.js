@@ -26,7 +26,6 @@ module.exports = grammar({
       choice(
         $.preprocessor_directive,
         $.variable_declaration,
-        $.variable_declaration_with_path,
         $.function_definition,
         $.control_statement,
         $.expression_statement,
@@ -99,6 +98,7 @@ module.exports = grammar({
         "var",
         optional(seq("/", $.storage_modifier)),
         optional(seq("/", $.type)),
+        optional($.path_components),
         field("name", $.identifier),
         optional(seq("=", $.expression)),
         optional(";"),
@@ -136,18 +136,6 @@ module.exports = grammar({
       ),
 
     path_components: ($) => repeat1(seq("/", $.identifier)),
-
-    // Variable declarations with path
-    variable_declaration_with_path: ($) =>
-      seq(
-        "var",
-        optional(seq("/", $.storage_modifier)),
-        optional(seq("/", $.type)),
-        $.path_components,
-        field("name", $.identifier),
-        optional(seq("=", $.expression)),
-        optional(";"),
-      ),
 
     // Function definitions
     function_definition: ($) =>
@@ -378,14 +366,27 @@ module.exports = grammar({
         $.raw_string,
       ),
 
-    double_quoted_string: ($) => token(seq('"', /[^"\\\n]*/, '"')),
+    double_quoted_string: ($) =>
+      seq(
+        '"',
+        repeat(
+          choice($.escape_sequence, $.string_interpolation, /[^"\\\[\n]+/),
+        ),
+        '"',
+      ),
 
-    single_quoted_string: ($) => token(seq("'", /[^'\\\n]*/, "'")),
+    single_quoted_string: ($) =>
+      seq("'", repeat(choice($.escape_sequence, /[^'\\\n]+/)), "'"),
 
-    triple_quoted_string: ($) => token(seq('{"', /[^"}]*/, '"}')),
+    triple_quoted_string: ($) =>
+      seq(
+        '{"',
+        repeat(choice($.escape_sequence, $.string_interpolation, /[^"}\\\[]+/)),
+        '"}',
+      ),
 
     raw_string: ($) =>
-      choice(token(seq('@{"', /[^"]*/, '"}')), token(seq("@", /./, /[^\n]*/))),
+      choice(seq('@{"', /[^"]+/, '"}'), seq("@", /./, /[^\n]*/)),
 
     escape_sequence: ($) =>
       token(
@@ -432,10 +433,17 @@ module.exports = grammar({
         seq(
           "list",
           "(",
-          optional(seq($.expression, repeat(seq(",", $.expression)))),
+          optional(
+            choice(
+              seq($.key_value_pair, repeat(seq(",", $.key_value_pair))),
+              seq($.expression, repeat(seq(",", $.expression))),
+            ),
+          ),
           ")",
         ),
       ),
+
+    key_value_pair: ($) => prec.left(1, seq($.expression, "=", $.expression)),
 
     boolean: ($) => choice("TRUE", "FALSE"),
 
