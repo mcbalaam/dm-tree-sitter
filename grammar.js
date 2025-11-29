@@ -26,6 +26,7 @@ module.exports = grammar({
       choice(
         $.preprocessor_directive,
         $.variable_declaration,
+        $.variable_declaration_with_path,
         $.function_definition,
         $.control_statement,
         $.expression_statement,
@@ -98,7 +99,6 @@ module.exports = grammar({
         "var",
         optional(seq("/", $.storage_modifier)),
         optional(seq("/", $.type)),
-        optional($.path_components),
         field("name", $.identifier),
         optional(seq("=", $.expression)),
         optional(";"),
@@ -136,6 +136,18 @@ module.exports = grammar({
       ),
 
     path_components: ($) => repeat1(seq("/", $.identifier)),
+
+    // Variable declarations with path
+    variable_declaration_with_path: ($) =>
+      seq(
+        "var",
+        optional(seq("/", $.storage_modifier)),
+        optional(seq("/", $.type)),
+        $.path_components,
+        field("name", $.identifier),
+        optional(seq("=", $.expression)),
+        optional(";"),
+      ),
 
     // Function definitions
     function_definition: ($) =>
