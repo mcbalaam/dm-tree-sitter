@@ -774,11 +774,6 @@
     "fields": {}
   },
   {
-    "type": "preprocessor_error",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "preprocessor_if",
     "named": true,
     "fields": {},
@@ -858,11 +853,6 @@
     }
   },
   {
-    "type": "preprocessor_pragma",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "preprocessor_undef",
     "named": true,
     "fields": {},
@@ -879,11 +869,6 @@
   },
   {
     "type": "preprocessor_value",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "preprocessor_warn",
     "named": true,
     "fields": {}
   },
@@ -925,6 +910,10 @@
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "preprocessor_macro",
           "named": true
         },
         {
@@ -1637,10 +1626,6 @@
     "named": false
   },
   {
-    "type": "error",
-    "named": false
-  },
-  {
     "type": "escape_sequence",
     "named": true
   },
@@ -1749,8 +1734,20 @@
     "named": false
   },
   {
-    "type": "pragma",
-    "named": false
+    "type": "preprocessor_error",
+    "named": true
+  },
+  {
+    "type": "preprocessor_macro",
+    "named": true
+  },
+  {
+    "type": "preprocessor_pragma",
+    "named": true
+  },
+  {
+    "type": "preprocessor_warn",
+    "named": true
   },
   {
     "type": "proc",
@@ -1826,10 +1823,6 @@
   },
   {
     "type": "verb",
-    "named": false
-  },
-  {
-    "type": "warn",
     "named": false
   },
   {
